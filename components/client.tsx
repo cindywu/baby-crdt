@@ -2,6 +2,9 @@ import React from 'react'
 
 export default function Client() {
   return (
-    <div>client</div>
+    <div className={"text-2xl"}>
+      client
+      <input/>
+    </div>
   )
 }
