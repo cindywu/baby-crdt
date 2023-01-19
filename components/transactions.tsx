@@ -26,7 +26,7 @@ export default function Transactions({ txs } : TransactionsProps) {
 
 function Transaction({ tx, i} : any) {
   return (
-    <div className={i/2 === 0 ? "flex flex-row justify-between text-xs p-4" : "flex flex-row justify-between text-xs p-4 bg-zinc-200"}>
+    <div className={i%2 === 1 ? "flex flex-row justify-between text-xs p-4" : "flex flex-row justify-between text-xs p-4 bg-zinc-200"}>
       <div className={"font-mono"}>{tx.id.slice(-6)}</div>
       <div>{tx.client}</div>
       <div>{tx.value}</div>
