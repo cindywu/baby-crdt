@@ -22,7 +22,9 @@ export default function Home() {
           client={"clientB"}
         />
       </div>
-      <Transactions/>
+      <Transactions
+        txs={txs}
+      />
     </div>
   )
 }
