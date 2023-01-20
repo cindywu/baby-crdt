@@ -25,10 +25,12 @@ export default function Transactions({ txs } : TransactionsProps) {
 
 function Transaction({ tx, i} : any) {
   return (
-    <div className={i%2 === 1 ? "grid grid-cols-3 text-xs p-4" : "grid grid-cols-3 text-xs p-4 bg-zinc-200"}>
+    <div className={i%2 === 1 ? "grid grid-cols-5 text-xs p-4" : "grid grid-cols-5 text-xs p-4 bg-zinc-200"}>
       <div className={"font-mono"}>{tx.id.slice(-6)}</div>
       <div>{tx.client}</div>
       <div>{tx.value}</div>
+      <div>{tx.back === null ? "null" : tx.back}</div>
+      <div>{tx.front === null ? "null" : tx.front}</div>
     </div>
   )
 }

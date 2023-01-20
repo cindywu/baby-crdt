@@ -14,6 +14,10 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    console.log({position})
+  }, [position])
+
+  useEffect(() => {
     inputRef.current.selectionStart = position + 1
     inputRef.current.selectionEnd = position + 1
   }, [value])
@@ -23,9 +27,16 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       // setValue(txs[txs.length - 1].value)
       console.log({txs})
       const last = txs.slice(-1).pop()
-      console.log({last})
+      console.log("hello", {last})
+      // first character
       if (last && last.back === null) {
         setValue(last.value + value)
+      }
+      // TODO: beginning of string
+
+      // end of string
+      if (last && last.front === null) {
+        setValue(value + last.value)
       }
   }, [txs])
 
@@ -44,18 +55,29 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
 
   function handleKeyUp(e: any) {
     const value = e.key
-    const position = e.target.selectionStart
-    const front = position
-    const back = null
+
+    let back
+    if (e.target.value.length !== 0 && position + 1 === e.target.value.length) { // insertion at end
+      back = position
+    } else if (position === 0) { // insertion at beginning
+      back = null
+    } else {
+      back = position - 1
+    }
+
+    let front
+    if (position === e.target.value.length || position === 0) {
+      front = null
+    } else if (position === 0) {
+      front = position
+    }
 
     const tx = {
       id: nanoid(),
       client,
       value,
-      // front: front !== null ? txs[front].id : null,
-      // back: back !== null ? txs[back].id : null
-      front: null,
-      back: null,
+      back,
+      front,
     }
     console.log({tx})
     setTxs([...txs, tx])
