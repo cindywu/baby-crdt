@@ -25,6 +25,11 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
   useEffect(() => {
     if (txs.length !== 0)  {
       const last = txs.slice(-1).pop()
+      if (last && last.value === "⌫") {
+        console.log('do something!')
+        setValue(value.slice(0, last.back - 1) + value.slice(last.back))
+        return
+      }
 
       // first character and insertion at beginning
       if (last && last.back === null) {
@@ -76,7 +81,7 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     const tx = {
       id: nanoid(),
       client,
-      value,
+      value: value === "Backspace" ? "⌫" : value,
       back,
       front,
     }
