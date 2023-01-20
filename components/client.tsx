@@ -55,6 +55,9 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
 
   function handleKeyUp(e: any) {
     const value = e.key
+    if (value.length !== 1 && value !== "Backspace") {
+      return
+    }
 
     let back
     if (e.target.value.length !== 0 && position === e.target.value.length) { // insertion at end
