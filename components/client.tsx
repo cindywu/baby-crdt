@@ -29,7 +29,7 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
   return (
     <div className={`w-2/5 text-2xl`}>
       <div className={`border-4 ${color}`}>
-        <div className={"font-mono text-xs text-zinc-400 p-4"}>Client</div>
+        <div className={"font-mono text-xs text-zinc-400 p-4"}>{client}</div>
         <input
           onChange={(e) => handleChange(e)}
           className={"w-full p-4 outline-none"}

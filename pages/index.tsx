@@ -8,18 +8,18 @@ export default function Home() {
   return (
     <div className={"w-screen"}>
       <div className={"flex justify-center py-10 text-2xl font-bold"}>baby crdt</div>
-      <div className={"flex flex-row justify-center space-x-4"}>
+      <div className={"flex flex-row justify-center space-x-14"}>
         <Client
           color={"border-lime-400"}
           txs={txs}
           setTxs={setTxs}
-          client={"clientA"}
+          client={"Client A"}
         />
         <Client
           color={"border-amber-400"}
           txs={txs}
           setTxs={setTxs}
-          client={"clientB"}
+          client={"Client B"}
         />
       </div>
       <Transactions
