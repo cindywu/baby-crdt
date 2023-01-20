@@ -26,18 +26,31 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     if (txs.length !== 0)  {
       const last = txs.slice(-1).pop()
       if (last && last.value === "⌫") {
-        console.log('do something!')
         setValue(value.slice(0, last.back - 1) + value.slice(last.back))
         return
       }
 
-      // first character and insertion at beginning
-      if (last && last.back === null) {
+
+      if (last && last.back === null) { // first character and insertion at beginning
         setValue(last.value + value)
-      } else if (last && last.front === null) {
-        setValue(value + last.value)
-      } else {
-        setValue(value.slice(0,last.back) + last.value + value.slice(last.back))
+
+      } else if (last && last.front === null) { // insertion at end
+        const newValue = last.value
+        const backID = last.back
+        const index = txs.findIndex((tx: any) => tx.id === backID)
+        setValue(value.slice(0) + newValue)
+      } else { // insertion in middle
+        const newValue = last.value
+        const backID = last.back
+        const index = txs.findIndex((tx: any) => tx.id === backID)
+        const frontID = last.front
+        // const index2 = txs.findIndex((tx: any) => tx.id === frontID)
+
+        const left = index === 0 ? value.slice(0, 1) : value.slice(0, index+1)
+        const right = value.slice(index+1)
+        console.log(left + "+" + newValue + "+" + right)
+
+        setValue(left + newValue + right)
       }
     }
   }, [txs])
@@ -62,10 +75,14 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     let back
     if (e.target.value.length !== 0 && position === e.target.value.length) { // insertion at end
       back = position
+      const thing = txs[back - 1]
+      back = thing.id
     } else if (position === 0) { // first character OR insertion at beginning
       back = null
     } else if (e.target.value.length !== 0 && position !== e.target.value.length){
       back = position
+      const thing = txs[back - 1]
+      back = thing.id
     } else {
       console.log('no one knows...')
     }
@@ -73,12 +90,16 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     let front
     if (e.target.value.length !== 0 && position === 0) { // insertion at beginning
       front = position
+      const thing = txs[front] //idk if this works
+      front = thing.id
     } else if (e.target.value.length === 0) { // first character
       front = null
     } else if (e.target.value.length !== 0 && position === e.target.value.length) { // insertion at end
       front = null
     } else {
       front = position
+      const thing = txs[front] //idk if this works
+      front = thing.id
     }
 
     const tx = {

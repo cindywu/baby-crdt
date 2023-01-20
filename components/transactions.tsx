@@ -29,8 +29,8 @@ function Transaction({ tx, i} : any) {
       <div className={"font-mono"}>{tx.id.slice(-6)}</div>
       <div>{tx.client}</div>
       <div>{tx.value}</div>
-      <div>{tx.back === null ? "null" : tx.back}</div>
-      <div>{tx.front === null ? "null" : tx.front}</div>
+      <div>{tx.back === null ? "null" : tx.back.slice(-6)}</div>
+      <div>{tx.front === null ? "null" : tx.front.slice(-6)}</div>
     </div>
   )
 }
