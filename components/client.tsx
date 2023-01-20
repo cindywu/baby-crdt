@@ -29,11 +29,10 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       // first character and insertion at beginning
       if (last && last.back === null) {
         setValue(last.value + value)
-      }
-
-      // insertion at end
-      if (last && last.front === null) {
+      } else if (last && last.front === null) {
         setValue(value + last.value)
+      } else {
+        setValue(value.slice(0,last.back) + last.value + value.slice(last.back))
       }
     }
   }, [txs])
@@ -57,6 +56,8 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       back = position
     } else if (position === 0) { // first character OR insertion at beginning
       back = null
+    } else if (e.target.value.length !== 0 && position !== e.target.value.length){
+      back = position
     } else {
       console.log('no one knows...')
     }
@@ -66,8 +67,10 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       front = position
     } else if (e.target.value.length === 0) { // first character
       front = null
-    } else { // insertion at end
+    } else if (e.target.value.length !== 0 && position === e.target.value.length) { // insertion at end
       front = null
+    } else {
+      front = position
     }
 
     const tx = {
