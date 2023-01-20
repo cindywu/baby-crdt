@@ -23,24 +23,22 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
   }, [value])
 
   useEffect(() => {
-    txs.length !== 0 &&
-      // setValue(txs[txs.length - 1].value)
-      console.log({txs})
+    if (txs.length !== 0)  {
       const last = txs.slice(-1).pop()
-      // first character
+
+      // first character and insertion at beginning
       if (last && last.back === null) {
         setValue(last.value + value)
       }
-      // TODO: beginning of string
 
-      // end of string
+      // insertion at end
       if (last && last.front === null) {
         setValue(value + last.value)
       }
+    }
   }, [txs])
 
   function handleChange(e : any){
-    console.log({e})
     const tx = {
       id: nanoid(),
       client,
@@ -48,7 +46,6 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       front: null,
       back: null
     }
-    console.log({tx})
     setTxs([...txs, tx])
   }
 
@@ -78,7 +75,6 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       back,
       front,
     }
-    console.log({tx})
     setTxs([...txs, tx])
   }
 
