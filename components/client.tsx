@@ -62,9 +62,11 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     }
 
     let front
-    if (e.target.value.length !== 0 && position === 0) { // insertion at end
+    if (e.target.value.length !== 0 && position === 0) { // insertion at beginning
       front = position
-    } else { // first character OR insertion at beginning
+    } else if (e.target.value.length === 0) { // first character
+      front = null
+    } else { // insertion at end
       front = null
     }
 
