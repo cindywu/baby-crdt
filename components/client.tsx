@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { nanoid } from 'nanoid'
 
 type ClientProps = {
@@ -9,9 +9,14 @@ type ClientProps = {
 }
 
 export default function Client({ color, txs, setTxs, client } : ClientProps) {
-  console.log({txs})
   const [value, setValue] = useState('')
-  // const [localTxs, setLocalTxs] = useState([])
+  const [position, setPosition] = useState(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    inputRef.current.selectionStart = position + 1
+    inputRef.current.selectionEnd = position + 1
+  }, [value])
 
   useEffect(() => {
     txs.length !== 0 &&
@@ -42,7 +47,6 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     const position = e.target.selectionStart
     const front = position
     const back = null
-    console.log({front, back, position})
 
     const tx = {
       id: nanoid(),
@@ -57,14 +61,21 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     setTxs([...txs, tx])
   }
 
+  function handleCursorMove(e: any) {
+    const position = e.target.selectionStart
+    setPosition(position)
+  }
+
   return (
     <div className={`w-2/5 text-2xl`}>
       <div className={`border-4 ${color}`}>
         <div className={"font-mono text-xs text-zinc-400 p-4"}>{client}</div>
         <input
+          ref={inputRef}
           // onChange={(e) => handleChange(e)}
           onChange={(e) => console.log('onChange fired!')}
           onKeyUp={(e) => handleKeyUp(e)}
+          onClick={(e) => handleCursorMove(e)}
           className={"w-full p-4 outline-none"}
           placeholder="say something"
           value={value}
