@@ -27,7 +27,6 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       // setValue(txs[txs.length - 1].value)
       console.log({txs})
       const last = txs.slice(-1).pop()
-      console.log("hello", {last})
       // first character
       if (last && last.back === null) {
         setValue(last.value + value)
@@ -57,19 +56,19 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     const value = e.key
 
     let back
-    if (e.target.value.length !== 0 && position + 1 === e.target.value.length) { // insertion at end
+    if (e.target.value.length !== 0 && position === e.target.value.length) { // insertion at end
       back = position
-    } else if (position === 0) { // insertion at beginning
+    } else if (position === 0) { // first character OR insertion at beginning
       back = null
     } else {
-      back = position - 1
+      console.log('no one knows...')
     }
 
     let front
-    if (position === e.target.value.length || position === 0) {
-      front = null
-    } else if (position === 0) {
+    if (e.target.value.length !== 0 && position === 0) { // insertion at end
       front = position
+    } else { // first character OR insertion at beginning
+      front = null
     }
 
     const tx = {
