@@ -9,24 +9,56 @@ type ClientProps = {
 }
 
 export default function Client({ color, txs, setTxs, client } : ClientProps) {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState<string>('')
   const [position, setPosition] = useState(null)
+  const [prevPosition, setPrevPosition] = useState(null)
+  const [index, setIndex] = useState(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    console.log({position})
-  }, [position])
+    if (inputRef.current) {
 
-  useEffect(() => {
-    inputRef.current.selectionStart = position + 1
-    inputRef.current.selectionEnd = position + 1
+      console.log({txs})
+      if (txs[txs.length - 1]?.value === "⌫") { // deletion
+        if (prevPosition + 1 < value.length) { //deletion in the middle
+          console.log({index}, index)
+
+          inputRef.current.selectionStart = index
+          inputRef.current.selectionEnd = index
+          setIndex(index-1)
+        } else { //deletion at en
+          inputRef.current.selectionStart = value.length
+          inputRef.current.selectionEnd = value.length
+        }
+        console.log('do something!')
+      } else {
+        if (prevPosition + 1 < value.length) { // insertion in middle
+          inputRef.current.selectionStart = index + 2
+          inputRef.current.selectionEnd = index + 2
+        } else { // insertion at end
+          inputRef.current.selectionStart = prevPosition + 1
+          inputRef.current.selectionEnd = prevPosition + 1
+        }
+      }
+    }
   }, [value])
 
   useEffect(() => {
+    setPosition(inputRef.current.selectionStart + 1)
+
     if (txs.length !== 0)  {
       const last = txs.slice(-1).pop()
       if (last && last.value === "⌫") {
-        setValue(value.slice(0, last.back - 1) + value.slice(last.back))
+        const backID = last.back
+        const index = txs.findIndex((tx: any) => tx.id === backID)
+        const thing1 = value.slice(0, index)
+        const thing2 = value.slice(index + 1)
+
+        // setPrevPosition(index - 1)
+        // setPosition(index - 1)
+        // setIndex(index)
+
+        setValue(thing1 + thing2)
         return
       }
 
@@ -38,37 +70,32 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
         const newValue = last.value
         const backID = last.back
         const index = txs.findIndex((tx: any) => tx.id === backID)
+        setPrevPosition(inputRef.current.selectionStart)
         setValue(value.slice(0) + newValue)
       } else { // insertion in middle
         const newValue = last.value
         const backID = last.back
         const index = txs.findIndex((tx: any) => tx.id === backID)
         const frontID = last.front
-        // const index2 = txs.findIndex((tx: any) => tx.id === frontID)
 
         const left = index === 0 ? value.slice(0, 1) : value.slice(0, index+1)
         const right = value.slice(index+1)
         console.log(left + "+" + newValue + "+" + right)
-
+        setPrevPosition(index+2)
+        setPosition(index+2)
+        setIndex(index)
         setValue(left + newValue + right)
       }
     }
-  }, [txs])
 
-  function handleChange(e : any){
-    const tx = {
-      id: nanoid(),
-      client,
-      value: e.target.value,
-      front: null,
-      back: null
-    }
-    setTxs([...txs, tx])
-  }
+  }, [txs])
 
   function handleKeyUp(e: any) {
     const value = e.key
-    if (value.length !== 1 && value !== "Backspace") {
+    if (
+      value.length !== 1
+      // && value !== "Backspace"
+    ) {
       return
     }
 
@@ -96,10 +123,11 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       front = null
     } else if (e.target.value.length !== 0 && position === e.target.value.length) { // insertion at end
       front = null
-    } else {
+    } else { // deletion at end
       front = position
       const thing = txs[front] //idk if this works
       front = thing.id
+      // front = null
     }
 
     const tx = {
@@ -117,14 +145,17 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     setPosition(position)
   }
 
+  function doSomething() {
+    return
+  }
+
   return (
     <div className={`w-2/5 text-2xl`}>
       <div className={`border-4 ${color}`}>
         <div className={"font-mono text-xs text-zinc-400 p-4"}>{client}</div>
         <input
           ref={inputRef}
-          // onChange={(e) => handleChange(e)}
-          onChange={(e) => console.log('onChange fired!')}
+          onChange={(e) => doSomething()}
           onKeyUp={(e) => handleKeyUp(e)}
           onClick={(e) => handleCursorMove(e)}
           className={"w-full p-4 outline-none"}
