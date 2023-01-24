@@ -3,7 +3,7 @@ import Client from '../components/client'
 import Transactions from '../components/transactions'
 
 export default function Home() {
-  const [txs, setTxs] = useState([])
+  const [txs, setTxs] = useState<any[]>([])
 
   return (
     <div className={"w-screen"}>
