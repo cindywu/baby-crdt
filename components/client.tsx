@@ -17,28 +17,12 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
 
   useEffect(() => {
     if (inputRef.current) {
-
-      console.log({txs})
-      if (txs[txs.length - 1]?.value === "⌫") { // deletion
-        if (prevPosition + 1 < value.length) { //deletion in the middle
-          console.log({index}, index)
-
-          inputRef.current.selectionStart = index
-          inputRef.current.selectionEnd = index
-          setIndex(index-1)
-        } else { //deletion at en
-          inputRef.current.selectionStart = value.length
-          inputRef.current.selectionEnd = value.length
-        }
-        console.log('do something!')
-      } else {
-        if (prevPosition + 1 < value.length) { // insertion in middle
-          inputRef.current.selectionStart = index + 2
-          inputRef.current.selectionEnd = index + 2
-        } else { // insertion at end
-          inputRef.current.selectionStart = prevPosition + 1
-          inputRef.current.selectionEnd = prevPosition + 1
-        }
+      if (prevPosition + 1 < value.length) { // insertion in middle
+        inputRef.current.selectionStart = index + 2
+        inputRef.current.selectionEnd = index + 2
+      } else { // insertion at end
+        inputRef.current.selectionStart = prevPosition + 1
+        inputRef.current.selectionEnd = prevPosition + 1
       }
     }
   }, [value])
@@ -48,20 +32,6 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
 
     if (txs.length !== 0)  {
       const last = txs.slice(-1).pop()
-      if (last && last.value === "⌫") {
-        const backID = last.back
-        const index = txs.findIndex((tx: any) => tx.id === backID)
-        const thing1 = value.slice(0, index)
-        const thing2 = value.slice(index + 1)
-
-        // setPrevPosition(index - 1)
-        // setPosition(index - 1)
-        // setIndex(index)
-
-        setValue(thing1 + thing2)
-        return
-      }
-
 
       if (last && last.back === null) { // first character and insertion at beginning
         setValue(last.value + value)
@@ -87,7 +57,6 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
         setValue(left + newValue + right)
       }
     }
-
   }, [txs])
 
   function handleKeyUp(e: any) {
@@ -125,9 +94,8 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       front = null
     } else { // deletion at end
       front = position
-      const thing = txs[front] //idk if this works
+      const thing = txs[front] // idk if this works <- THIS DEF IS BROKEN
       front = thing.id
-      // front = null
     }
 
     const tx = {
