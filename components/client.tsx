@@ -118,7 +118,7 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
   }
 
   return (
-    <div className={`w-2/5 text-2xl`}>
+    <div className={`w-3/5 text-sm sm:text-2xl sm:w-2/5`}>
       <div className={`border-4 ${color}`}>
         <div className={"font-mono text-xs text-zinc-400 p-4"}>{client}</div>
         <input
