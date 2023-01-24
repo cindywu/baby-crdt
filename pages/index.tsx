@@ -27,6 +27,9 @@ export default function Home() {
       <Transactions
         txs={txs}
       />
+      <div className={"fixed bottom-0 font-mono text-xs text-zinc-400 w-screen text-center py-8 bg-white"}>
+      <Link href="https://cindy-wu.com">cindy-wu.com</Link>
+      </div>
     </div>
   )
 }

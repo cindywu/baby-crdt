@@ -9,6 +9,7 @@ export default function Transactions({ txs } : TransactionsProps) {
     <div className={"flex flex-col justify-center pt-20 mx-24"}>
       <div className={"w-full text-xl p-4 "}>
         <div className={"font-mono text-xs text-zinc-400 pb-4"}>Transactions</div>
+        <div className={"overflow-auto max-h-48"}>
         {txs && txs.map((tx: any, i: any) => {
         return (
           <Transaction
@@ -18,6 +19,7 @@ export default function Transactions({ txs } : TransactionsProps) {
           />
         )
       })}
+      </div>
       </div>
     </div>
   )
