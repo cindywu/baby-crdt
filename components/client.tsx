@@ -43,22 +43,22 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
     setPosition(inputRef.current.selectionStart + 1)
 
     if (txs.length !== 0)  {
-      const last = txs.slice(-1).pop()
+      const lastTx = txs.slice(-1).pop()
 
-      if (last && last.back === null) { // first character and insertion at beginning
-        setValue(last.value + value)
+      if (firstCharOrInsertionAtBeginning(lastTx)) {
+        setValue(lastTx.value + value)
 
-      } else if (last && last.front === null) { // insertion at end
-        const newValue = last.value
-        const backID = last.back
+      } else if (insertionAtEnd(lastTx)) {
+        const newValue = lastTx.value
+        const backID = lastTx.back
         const index = txs.findIndex((tx: tx) => tx.id === backID)
         setPrevPosition(inputRef.current.selectionStart)
         setValue(value.slice(0) + newValue)
       } else { // insertion in middle
-        const newValue = last.value
-        const backID = last.back
+        const newValue = lastTx.value
+        const backID = lastTx.back
         const index = txs.findIndex((tx: tx) => tx.id === backID)
-        const frontID = last.front
+        const frontID = lastTx.front
 
         const left = index === 0 ? value.slice(0, 1) : value.slice(0, index+1)
         const right = value.slice(index+1)
@@ -70,6 +70,14 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
       }
     }
   }, [txs])
+
+  function firstCharOrInsertionAtBeginning(lastTx: tx) {
+    return lastTx && lastTx.back === null ? true : false
+  }
+
+  function insertionAtEnd(lastTx: tx) {
+    return lastTx && lastTx.front === null ? true : false
+  }
 
   function handleKeyUp(e: any) {
     const value = e.key
