@@ -1,7 +1,15 @@
 import React from 'react'
 
+type tx = {
+  id: string
+  client: string
+  value: string
+  back: string
+  front: string
+}
+
 type TransactionsProps = {
-  txs: any
+  txs: tx[]
 }
 
 export default function Transactions({ txs } : TransactionsProps) {
@@ -27,7 +35,12 @@ export default function Transactions({ txs } : TransactionsProps) {
   )
 }
 
-function Transaction({ tx, i} : any) {
+type TransactionProps = {
+  tx: tx
+  i: number
+}
+
+function Transaction({ tx, i }: TransactionProps) {
   return (
     <div className={i%2 === 1 ? "grid grid-cols-5 text-xs p-4 " : "grid grid-cols-5 text-xs p-4 bg-zinc-200"}>
       <div className={"font-mono"}>{tx.id.slice(-6)}</div>

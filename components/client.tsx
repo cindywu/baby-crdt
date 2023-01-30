@@ -1,18 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useRef
+} from 'react'
 import { nanoid } from 'nanoid'
+
+type tx = {
+  id: string
+  client: string
+  value: string
+  back: string
+  front: string
+}
 
 type ClientProps = {
   color: string
-  txs: any
-  setTxs: any
+  txs: tx[]
+  setTxs: (txs: tx[]) => void
   client: string
 }
 
-export default function Client({ color, txs, setTxs, client } : ClientProps) {
+export default function Client({ color, txs, setTxs, client }: ClientProps) {
   const [value, setValue] = useState<string>('')
-  const [position, setPosition] = useState(null)
-  const [prevPosition, setPrevPosition] = useState(null)
-  const [index, setIndex] = useState(null)
+  const [position, setPosition] = useState<number | null>(null)
+  const [prevPosition, setPrevPosition] = useState<number | null>(null)
+  const [index, setIndex] = useState<number | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -39,13 +51,13 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       } else if (last && last.front === null) { // insertion at end
         const newValue = last.value
         const backID = last.back
-        const index = txs.findIndex((tx: any) => tx.id === backID)
+        const index = txs.findIndex((tx: tx) => tx.id === backID)
         setPrevPosition(inputRef.current.selectionStart)
         setValue(value.slice(0) + newValue)
       } else { // insertion in middle
         const newValue = last.value
         const backID = last.back
-        const index = txs.findIndex((tx: any) => tx.id === backID)
+        const index = txs.findIndex((tx: tx) => tx.id === backID)
         const frontID = last.front
 
         const left = index === 0 ? value.slice(0, 1) : value.slice(0, index+1)
@@ -113,7 +125,7 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     setPosition(position)
   }
 
-  function doSomething() {
+  function doSomething(e:any) {
     return
   }
 
@@ -123,8 +135,8 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
         <div className={"font-mono text-xs text-zinc-400 p-4"}>{client}</div>
         <input
           ref={inputRef}
-          onChange={(e) => doSomething()}
-          onKeyUp={(e) => handleKeyUp(e)}
+          onChange={(e) => doSomething(e)}
+          onKeyUp={(e: any) => handleKeyUp(e)}
           onClick={(e) => handleCursorMove(e)}
           className={"w-full p-4 outline-none"}
           placeholder="say something"
@@ -135,3 +147,5 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     </div>
   )
 }
+
+
