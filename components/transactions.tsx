@@ -4,8 +4,9 @@ type tx = {
   id: string
   client: string
   value: string
-  back: string
-  front: string
+  charID: string
+  backID: string
+  frontID: string
 }
 
 type TransactionsProps = {
@@ -46,8 +47,8 @@ function Transaction({ tx, i }: TransactionProps) {
       <div className={"font-mono"}>{tx.id.slice(-6)}</div>
       <div>{tx.client}</div>
       <div>{tx.value}</div>
-      <div>{tx.back === null ? "null" : tx.back.slice(-6)}</div>
-      <div>{tx.front === null ? "null" : tx.front.slice(-6)}</div>
+      <div>{tx.backID === null ? "null" : tx.backID.slice(-6)}</div>
+      <div>{tx.frontID === null ? "null" : tx.frontID.slice(-6)}</div>
     </div>
   )
 }

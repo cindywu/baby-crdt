@@ -3,16 +3,17 @@ import Client from '../components/client'
 import Transactions from '../components/transactions'
 import Link from 'next/link'
 
-type tx = {
+type Tx = {
   id: string
   client: string
   value: string
-  back: string
-  front: string
+  charID: string
+  backID: string
+  frontID: string
 }
 
 export default function Home() {
-  const [txs, setTxs] = useState<tx[]>([])
+  const [txs, setTxs] = useState<Tx[]>([])
 
   return (
     <div className={"w-screen"}>
