@@ -2,7 +2,7 @@ import React, {
   useState,
   useEffect,
   useRef,
-  InputEvent
+  KeyboardEvent
 } from 'react'
 import { nanoid } from 'nanoid'
 import Document from './document'
@@ -47,7 +47,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
     }
   }, [txs])
 
-  function processTx(e: KeyInput<HTMLInputElement>){
+  function processTx(e: KeyboardEvent<HTMLInputElement>){
     let value = e.key // "a"
 
     if (!isValidValue(value)) {
@@ -57,7 +57,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
 
     const backID = getBackID()
 
-    const tx = generateNewTx(value, backID, null)
+    const tx = generateNewTx(value, client, backID, null)
     setTxs([...txs, tx])
   }
 
@@ -79,10 +79,11 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
     return char
   }
 
-  function generateNewTx(value, backID, frontID){
+  function generateNewTx(value, client, backID, frontID){
     const tx = {
       id: nanoid(),
       value: value,
+      client,
       backID,
       frontID
     }
@@ -105,7 +106,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
         <input
           ref={inputRef}
           onChange={() => console.log('onChange fired!')}
-          onKeyUp={(e: KeyInput<HTMLInputElement>) => processTx(e)}
+          onKeyUp={(e: KeyboardEvent<HTMLInputElement>) => processTx(e)}
           // onClick={(e) => handleCursorMove(e)}
           className={"w-full p-4 outline-none"}
           placeholder="say something"

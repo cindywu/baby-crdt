@@ -7,8 +7,8 @@ type Tx = {
   id: string
   client: string
   value: string
-  back: string
-  front: string
+  backID: string
+  frontID: string
 }
 
 export default function Home() {
