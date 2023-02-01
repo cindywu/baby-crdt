@@ -4,6 +4,7 @@ type tx = {
   id: string
   client: string
   value: string
+  charID: string
   backID: string
   frontID: string
 }

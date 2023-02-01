@@ -11,6 +11,7 @@ type Tx = {
   id: string
   client: string
   value: string | null
+  charID: string | null
   backID: string | null
   frontID: string | null
 }
@@ -32,14 +33,19 @@ type Char = {
 
 export default function Client({ color, txs, setTxs, client }: ClientProps) {
   const [document, setDocument] = useState<Char[]>([])
+  const [docValue, setDocValue] = useState<string>('')
   const inputRef = useRef<HTMLInputElement>(null)
 
+  useEffect(() => {
+    console.log(client, docValue)
+    setDocValue(getValueFromDocument())
+  },[document])
 
   useEffect(() => {
     const lastTx = txs.slice(-1)[0]
 
     if (lastTx) {
-      const char = generateNewChar(lastTx.value, lastTx.backID, lastTx.frontID, false)
+      const char = generateNewChar(lastTx.value, lastTx.charID, lastTx.backID, lastTx.frontID, false)
       setDocument([...document, char])
     }
   }, [txs])
@@ -65,9 +71,9 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
     return null
   }
 
-  function generateNewChar(value, backID, frontID, inHeaven){
+  function generateNewChar(value, charID, backID, frontID, inHeaven){
     const char = {
-      id: nanoid(),
+      id: charID,
       value,
       backID,
       frontID,
@@ -81,6 +87,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
       id: nanoid(),
       value: value,
       client,
+      charID: nanoid(),
       backID,
       frontID
     }
@@ -142,7 +149,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
           // onClick={(e) => handleCursorMove(e)}
           className={"w-full p-4 outline-none"}
           placeholder="say something"
-          value={getValueFromDocument()}
+          value={docValue}
         />
       </div>
       <Document
