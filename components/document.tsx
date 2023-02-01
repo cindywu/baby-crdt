@@ -29,6 +29,7 @@ export default function Document({ document } : DocumentProps) {
   )
 }
 
+
 function Char({char, i}: {char: Char, i: number}){
   return(
     <div className={

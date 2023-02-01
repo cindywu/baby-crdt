@@ -34,6 +34,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
   const [document, setDocument] = useState<Char[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
 
+
   useEffect(() => {
     const lastTx = txs.slice(-1)[0]
 
@@ -90,11 +91,42 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
     return value.length === 1 ? true : false
   }
 
+  function checkForFirstChar() {
+    return document.some((char: Char) => char.frontID === null && char.backID === null)
+  }
+
+  function checkForNextChar(currentCharID:string){
+    return document.some((char: Char) => char.backID === currentCharID)
+  }
+
+  function returnFirstChar(){
+    return document.filter((char: Char) => char.frontID === null && char.backID === null)[0]
+  }
+
+  function returnNextChar(currentCharID: string) {
+    return document.filter((char: Char) => char.backID === currentCharID)[0]
+  }
+
   function getValueFromDocument(){
-    let value : string = ""
-    document.map((char: Char) => {
-      value = value + char.value
-    })
+    let value: string = ""
+
+    let firstCharExists : boolean = checkForFirstChar()
+    if (!firstCharExists) return "null"
+
+    let firstChar = returnFirstChar()
+
+    value = value + firstChar.value // "a"
+    let currentCharID = firstChar.id
+
+    let nextCharExists = checkForNextChar(currentCharID)
+
+    while (nextCharExists) {
+      let nextChar = returnNextChar(currentCharID)
+      value = value + nextChar.value // "ab"
+      currentCharID = nextChar.id
+      nextCharExists = checkForNextChar(currentCharID)
+    }
+
     return value
   }
 
