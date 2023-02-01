@@ -16,11 +16,12 @@ export default function Document({ document } : DocumentProps) {
 
   return (
     <div className={"pt-4"}>
-      {document && document.map((char: Char)=> {
+      {document && document.map((char: Char, i: number)=> {
         return (
           <Char
             key={char.id}
             char={char}
+            i={i}
           />
         )
       })}
@@ -28,11 +29,19 @@ export default function Document({ document } : DocumentProps) {
   )
 }
 
-function Char({char}: {char: Char}){
+function Char({char, i}: {char: Char, i: number}){
   return(
-    <div className={"px-2 flex justify-between"}>
-      <div className={"font-mono text-xs"}>{char.id.slice(-6)}</div>
-      <div>{char.value}</div>
+    <div className={
+      i%2 === 1
+        ?
+        "grid grid-cols-4 text-xs p-1"
+        :
+        "grid grid-cols-4 text-xs bg-zinc-200 p-1"
+    }>
+      <div className={"font-mono"}>{char.id.slice(-3)}</div>
+      <div className={""}>{char.backID ? char.backID.slice(-3) : "null"}</div>
+      <div className={""}>{char.frontID ? char.frontID.slice(-3) : "null"}</div>
+      <div className={""}>{char.value}</div>
     </div>
   )
 }

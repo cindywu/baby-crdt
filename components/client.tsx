@@ -35,10 +35,6 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    console.log({document})
-  }, [document])
-
-  useEffect(() => {
     const lastTx = txs.slice(-1)[0]
 
     if (lastTx) {
@@ -63,7 +59,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
 
   function getBackID(){
     if (document.length > 0) {
-      return document[0].id
+      return document[document.length - 1].id
     }
     return null
   }
@@ -95,7 +91,11 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
   }
 
   function getValueFromDocument(){
-    return "hello"
+    let value : string = ""
+    document.map((char: Char) => {
+      value = value + char.value
+    })
+    return value
   }
 
 
@@ -110,7 +110,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
           // onClick={(e) => handleCursorMove(e)}
           className={"w-full p-4 outline-none"}
           placeholder="say something"
-          // value={getValueFromDocument()}
+          value={getValueFromDocument()}
         />
       </div>
       <Document
