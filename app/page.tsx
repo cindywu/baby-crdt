@@ -1,15 +1,16 @@
+"use client"
 import React, { useState } from 'react'
 import Client from '../components/client'
 import Transactions from '../components/transactions'
 import Link from 'next/link'
 
 type Tx = {
-  id: string
-  client: string
-  value: string
-  charID: string
-  backID: string
-  frontID: string
+  id: string | null
+  client: string | null
+  value: string | null
+  charID: string | null
+  backID: string | null
+  frontID: string | null
 }
 
 export default function Home() {

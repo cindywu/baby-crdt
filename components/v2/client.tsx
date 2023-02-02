@@ -17,17 +17,18 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
 
   useEffect(() => {
     if (inputRef.current) {
-      if (prevPosition + 1 < value.length) { // insertion in middle
-        inputRef.current.selectionStart = index + 2
-        inputRef.current.selectionEnd = index + 2
+      if (prevPosition && prevPosition + 1 < value.length) { // insertion in middle
+        inputRef.current.selectionStart = index && index + 2
+        inputRef.current.selectionEnd = index && index + 2
       } else { // insertion at end
-        inputRef.current.selectionStart = prevPosition + 1
-        inputRef.current.selectionEnd = prevPosition + 1
+        inputRef.current.selectionStart = prevPosition && prevPosition + 1
+        inputRef.current.selectionEnd = prevPosition && prevPosition + 1
       }
     }
   }, [value])
 
   useEffect(() => {
+
     setPosition(inputRef.current.selectionStart + 1)
 
     if (txs.length !== 0)  {
@@ -71,13 +72,13 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     let back
     if (e.target.value.length !== 0 && position === e.target.value.length) { // insertion at end
       back = position
-      const thing = txs[back - 1]
+      const thing = back ? txs[back - 1] : null
       back = thing.id
     } else if (position === 0) { // first character OR insertion at beginning
       back = null
     } else if (e.target.value.length !== 0 && position !== e.target.value.length){
       back = position
-      const thing = txs[back - 1]
+      const thing = back ? txs[back - 1] : null
       back = thing.id
     } else {
       console.log('no one knows...')
@@ -94,7 +95,7 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       front = null
     } else { // deletion at end
       front = position
-      const thing = txs[front] // idk if this works <- THIS DEF IS BROKEN
+      const thing = front ? txs[front] : null // idk if this works <- THIS DEF IS BROKEN
       front = thing.id
     }
 

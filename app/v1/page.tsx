@@ -1,6 +1,7 @@
+"use client"
 import React, { useState } from 'react'
-import Client from '../../components/client-v1'
-import Transactions from '../../components/transactions-v1'
+import Client from '../../components/v1/client'
+import Transactions from '../../components/v1/transactions'
 
 export default function Home() {
   const [txs, setTxs] = useState([])
