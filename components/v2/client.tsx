@@ -10,25 +10,29 @@ type ClientProps = {
 
 export default function Client({ color, txs, setTxs, client } : ClientProps) {
   const [value, setValue] = useState<string>('')
-  const [position, setPosition] = useState(null)
-  const [prevPosition, setPrevPosition] = useState(null)
-  const [index, setIndex] = useState(null)
+  const [position, setPosition] = useState<number>(0)
+  const [prevPosition, setPrevPosition] = useState<number>(0)
+  const [index, setIndex] = useState<number>(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (inputRef.current) {
-      if (prevPosition + 1 < value.length) { // insertion in middle
-        inputRef.current.selectionStart = index + 2
-        inputRef.current.selectionEnd = index + 2
+      if (prevPosition && prevPosition + 1 < value.length) { // insertion in middle
+        inputRef.current.selectionStart = index && index + 2
+        inputRef.current.selectionEnd = index && index + 2
       } else { // insertion at end
-        inputRef.current.selectionStart = prevPosition + 1
-        inputRef.current.selectionEnd = prevPosition + 1
+        inputRef.current.selectionStart = prevPosition && prevPosition + 1
+        inputRef.current.selectionEnd = prevPosition && prevPosition + 1
       }
     }
   }, [value])
 
   useEffect(() => {
-    setPosition(inputRef.current.selectionStart + 1)
+
+    if (inputRef && inputRef.current && inputRef.current.selectionStart) {
+      setPosition(inputRef.current.selectionStart + 1)
+    }
+
 
     if (txs.length !== 0)  {
       const last = txs.slice(-1).pop()
@@ -40,7 +44,9 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
         const newValue = last.value
         const backID = last.back
         const index = txs.findIndex((tx: any) => tx.id === backID)
-        setPrevPosition(inputRef.current.selectionStart)
+        if (inputRef && inputRef.current && inputRef.current.selectionStart) {
+          setPrevPosition(inputRef.current.selectionStart)
+        }
         setValue(value.slice(0) + newValue)
       } else { // insertion in middle
         const newValue = last.value
@@ -71,13 +77,13 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
     let back
     if (e.target.value.length !== 0 && position === e.target.value.length) { // insertion at end
       back = position
-      const thing = txs[back - 1]
+      const thing = back ? txs[back - 1] : null
       back = thing.id
     } else if (position === 0) { // first character OR insertion at beginning
       back = null
     } else if (e.target.value.length !== 0 && position !== e.target.value.length){
       back = position
-      const thing = txs[back - 1]
+      const thing = back ? txs[back - 1] : null
       back = thing.id
     } else {
       console.log('no one knows...')
@@ -94,7 +100,7 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
       front = null
     } else { // deletion at end
       front = position
-      const thing = txs[front] // idk if this works <- THIS DEF IS BROKEN
+      const thing = front ? txs[front] : null // idk if this works <- THIS DEF IS BROKEN
       front = thing.id
     }
 

@@ -45,7 +45,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
     const lastTx = txs.slice(-1)[0]
 
     if (lastTx) {
-      const char : Char = generateNewChar(lastTx.value, lastTx.charID, lastTx.backID, lastTx.frontID, false)
+      const char : Char= generateNewChar(lastTx.value, lastTx.charID, lastTx.backID, lastTx.frontID, false)
       setDocument([...document, char])
     }
   }, [txs])
@@ -113,7 +113,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
     return document.some((char: Char) => char.frontID === null && char.backID === null)
   }
 
-  function checkForNextChar(currentCharID:string | null){
+  function checkForNextChar(currentCharID: string | null){
     return document.some((char: Char) => char.backID === currentCharID)
   }
 
