@@ -45,10 +45,24 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
     const lastTx = txs.slice(-1)[0]
 
     if (lastTx) {
-      const char : Char = generateNewChar(lastTx.value, lastTx.charID, lastTx.backID, lastTx.frontID, false)
-      setDocument([...document, char])
+      if (lastTx.value === 'Backspace'){
+        let newDocument = document.map((char: Char) => {
+          if (char.id === lastTx.backID) {
+            return sendCharToHeaven(char)
+          }
+          return char
+        })
+        setDocument(newDocument)
+      } else {
+        const char : Char = generateNewChar(lastTx.value, lastTx.charID, lastTx.backID, lastTx.frontID, false)
+        setDocument([...document, char])
+      }
     }
   }, [txs])
+
+  function sendCharToHeaven(char: Char){
+    return {...char, inHeaven: true}
+  }
 
   function processTx(e: KeyboardEvent<HTMLInputElement>){
     let value = e.key // "a"
@@ -106,7 +120,7 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
   }
 
   function isValidValue(value: string) {
-    return value.length === 1 ? true : false
+    return value.length === 1 ||  value === "Backspace" ? true : false
   }
 
   function checkForFirstChar() {
@@ -140,7 +154,9 @@ export default function Client({ color, txs, setTxs, client }: ClientProps) {
 
     while (nextCharExists) {
       let nextChar = returnNextChar(currentCharID)
-      value = value + nextChar.value // "ab"
+      if (!nextChar.inHeaven) {
+        value = value + nextChar.value // "ab"
+      }
       currentCharID = nextChar.id
       nextCharExists = checkForNextChar(currentCharID)
     }

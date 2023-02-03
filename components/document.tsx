@@ -35,14 +35,15 @@ function Char({char, i}: {char: Char, i: number}){
     <div className={
       i%2 === 1
         ?
-        "grid grid-cols-4 text-xs p-1"
+        "grid grid-cols-5 text-xs p-1"
         :
-        "grid grid-cols-4 text-xs bg-zinc-200 p-1"
+        "grid grid-cols-5 text-xs bg-zinc-200 p-1"
     }>
       <div className={"font-mono"}>{char ? char.id?.slice(-3) : "null"}</div>
       <div className={""}>{char.backID ? char.backID.slice(-3) : "null"}</div>
       <div className={""}>{char.frontID ? char.frontID.slice(-3) : "null"}</div>
       <div className={""}>{char.value}</div>
+      <div className={""}>{char.inHeaven && "😇"}</div>
     </div>
   )
 }
