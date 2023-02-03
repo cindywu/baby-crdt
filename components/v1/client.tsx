@@ -18,8 +18,12 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
   }, [position])
 
   useEffect(() => {
-    inputRef.current.selectionStart = position + 1
-    inputRef.current.selectionEnd = position + 1
+    if (inputRef && inputRef.current && position) {
+      inputRef.current.selectionStart  = position + 1
+    }
+    if (inputRef && inputRef.current && position) {
+      inputRef.current.selectionEnd = position + 1
+    }
   }, [value])
 
   useEffect(() => {

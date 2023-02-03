@@ -10,9 +10,9 @@ type ClientProps = {
 
 export default function Client({ color, txs, setTxs, client } : ClientProps) {
   const [value, setValue] = useState<string>('')
-  const [position, setPosition] = useState(null)
-  const [prevPosition, setPrevPosition] = useState(null)
-  const [index, setIndex] = useState(null)
+  const [position, setPosition] = useState<number>(0)
+  const [prevPosition, setPrevPosition] = useState<number>(0)
+  const [index, setIndex] = useState<number>(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -29,7 +29,10 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
 
   useEffect(() => {
 
-    setPosition(inputRef.current.selectionStart + 1)
+    if (inputRef && inputRef.current && inputRef.current.selectionStart) {
+      setPosition(inputRef.current.selectionStart + 1)
+    }
+
 
     if (txs.length !== 0)  {
       const last = txs.slice(-1).pop()
@@ -41,7 +44,9 @@ export default function Client({ color, txs, setTxs, client } : ClientProps) {
         const newValue = last.value
         const backID = last.back
         const index = txs.findIndex((tx: any) => tx.id === backID)
-        setPrevPosition(inputRef.current.selectionStart)
+        if (inputRef && inputRef.current && inputRef.current.selectionStart) {
+          setPrevPosition(inputRef.current.selectionStart)
+        }
         setValue(value.slice(0) + newValue)
       } else { // insertion in middle
         const newValue = last.value
